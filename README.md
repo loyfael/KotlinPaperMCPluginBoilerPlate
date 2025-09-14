@@ -1,143 +1,401 @@
-# KotlinPaperMCPluginBoilerPlate
+# 🚀 Kotlin PaperMC Plugin Boilerplate
 
-A simple and efficient boilerplate for creating PaperMC plugins in Kotlin with Java 21.
+[![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://openjdk.java.net/projects/jdk/21/)
+[![Kotlin](https://img.shields.io/badge/Kotlin-1.9.24-blue.svg)](https://kotlinlang.org/)
+[![PaperMC](https://img.shields.io/badge/PaperMC-1.21.8-green.svg)](https://papermc.io/)
+[![Maven](https://img.shields.io/badge/Maven-3.6+-red.svg)](https://maven.apache.org/)
+
+A **production-ready** boilerplate for creating high-quality PaperMC plugins in Kotlin. This template includes everything you need to get started with modern Minecraft plugin development, featuring database management, configuration handling, command systems, and more.
+
+## ✨ Features
+
+### 🏗️ **Core Architecture**
+- ✅ **Modern Kotlin** (1.9.24) with full Java 21 support
+- ✅ **Plugin lifecycle management** with proper initialization and cleanup
+- ✅ **Modular design** with separated concerns
+- ✅ **Error handling** and logging best practices
+
+### 🛠️ **Built-in Systems**
+- ✅ **Configuration Manager** - YAML config handling with type safety
+- ✅ **Database Manager** - MySQL & SQLite support with HikariCP connection pooling
+- ✅ **Command System** - Advanced command handling with permissions and help
+- ✅ **Event Listeners** - Player connection tracking example
+- ✅ **Utility Classes** - Common functions for plugin development
+- ✅ **Data Models** - Player data management example
+
+### 🔧 **Development Tools**
+- ✅ **Maven Shade Plugin** - Dependency packaging with relocations
+- ✅ **Hot reload friendly** - Development-optimized configuration
+- ✅ **Debug mode** - Built-in debugging and logging utilities
+- ✅ **Modern API** - Uses latest PaperMC features (`pluginMeta` instead of deprecated `description`)
 
 ## 📋 Prerequisites
 
-- **Java 21** (JDK)
-- **Maven 3.6+**
-- **PaperMC Server 1.21.7**
-- **Kotlin 1.9.24**
-- **IDE** (IntelliJ IDEA recommended) please don't use this dinosaur called Eclipse, it is not supported by Kotlin and PaperMC, use IntelliJ IDEA Community instead.
+- **Java 21 JDK** ([Download](https://adoptium.net/temurin/releases/))
+- **Maven 3.6+** ([Download](https://maven.apache.org/download.cgi))
+- **IntelliJ IDEA** (Community or Ultimate) - **Recommended IDE**
+- **PaperMC Server 1.21.8+** ([Download](https://papermc.io/downloads))
+
+> ⚠️ **Note**: Eclipse is not recommended for Kotlin development. Use IntelliJ IDEA for the best experience.
 
 ## 🚀 Quick Start
 
-### 1. Clone or download the project
-
+### 1. **Clone the Repository**
 ```bash
-git clone <your-repo>
+git clone https://github.com/loyfael/KotlinPaperMCPluginBoilerPlate.git
 cd KotlinPaperMCPluginBoilerPlate
 ```
 
-### 2. Compile the plugin
+### 2. **Customize the Plugin**
+Edit the following files to match your project:
 
+**`pom.xml`**:
+```xml
+<groupId>com.yourname</groupId>
+<artifactId>your-plugin-name</artifactId>
+<version>1.0.0</version>
+```
+
+**`src/main/resources/plugin.yml`**:
+```yaml
+name: YourPluginName
+main: com.yourname.plugin.MyPlugin
+author: YourName
+description: Your plugin description
+```
+
+### 3. **Update Package Names**
+Rename the package from `com.example.plugin` to your own:
+- Right-click on the package in IntelliJ IDEA
+- Select "Refactor → Rename"
+- Update all references
+
+### 4. **Build the Plugin**
 ```bash
 mvn clean package
 ```
 
-### 3. Installation
-
-1. Copy the generated JAR file from `target/KotlinPaperMCPluginBoilerPlate-1.0.0.jar`
-2. Place it in the `plugins/` folder of your PaperMC server
-3. Restart the server
+### 5. **Installation**
+1. Copy `target/your-plugin-name-1.0.0-SNAPSHOT.jar` to your server's `plugins/` folder
+2. Restart your server
+3. Configure the plugin in `plugins/YourPluginName/config.yml`
 
 ## 📁 Project Structure
 
 ```
 KotlinPaperMCPluginBoilerPlate/
-├── src/
-│   └── Main.kt                    # Main plugin class
-├── plugin.yml                     # Plugin metadata
-├── pom.xml                        # Maven configuration
-└── README.md                      # This file
+├── src/main/
+│   ├── kotlin/com/example/plugin/
+│   │   ├── MyPlugin.kt                 # Main plugin class
+│   │   ├── ConfigManager.kt            # Configuration handler
+│   │   ├── DatabaseManager.kt          # Database connection manager
+│   │   ├── MainCommand.kt              # Main command executor
+│   │   ├── PlayerConnectionListener.kt # Event listener example
+│   │   ├── data/
+│   │   │   └── PlayerData.kt          # Data model example
+│   │   └── utils/
+│   │       └── PluginUtils.kt         # Utility functions
+│   └── resources/
+│       ├── config.yml                  # Default configuration
+│       └── plugin.yml                  # Plugin metadata
+├── pom.xml                            # Maven configuration
+├── README.md                          # This file
+└── .gitignore                         # Git ignore rules
 ```
 
-## 🔧 Configuration
+## ⚙️ Configuration
 
-### plugin.yml
-
+### **Default Configuration** (`config.yml`)
 ```yaml
-name: KotlinPaperMCPluginBoilerPlate
-main: me.loyfael.plugin.Main
-version: 1.0.0
-author: Loyfael
-api-version: 1.21
+# Plugin Settings
+plugin:
+  debug: false
+  language: "en"
+  auto-save-interval: 5  # minutes (0 to disable)
+
+# Database Configuration
+database:
+  type: "sqlite"  # sqlite or mysql
+  mysql:
+    host: "localhost"
+    port: 3306
+    database: "minecraft"
+    username: "user"
+    password: "password"
+  sqlite:
+    file: "database.db"
+
+# Messages
+messages:
+  prefix: "&8[&bMyPlugin&8] &f"
+  no-permission: "&cYou don't have permission to use this command!"
+  reload-success: "&aConfiguration reloaded successfully!"
 ```
 
-### Customization
-
-1. **Change plugin name**: Modify `name` in `plugin.yml` and `artifactId` in `pom.xml`
-2. **Change package**: Replace `me.loyfael.plugin` with your own package
-3. **Update author**: Change `author` in `plugin.yml` and `groupId` in `pom.xml`
-
-## 🛠️ Development
-
-### Useful Maven commands
-
-```bash
-# Compile the project
-mvn compile
-
-# Clean and compile
-mvn clean compile
-
-# Create the final JAR
-mvn clean package
-
-# Install to local repository
-mvn install
-```
-
-### Basic plugin structure
-
+### **Configuration Manager Features**
 ```kotlin
-class Main : JavaPlugin() {
-    override fun onEnable() {
-        // Plugin initialization code
-        logger.info("Plugin enabled!")
-    }
+// Get configuration values with defaults
+val debugMode = configManager.isDebugEnabled()
+val autoSaveInterval = configManager.getAutoSaveInterval()
+val message = configManager.getMessage("no-permission")
 
-    override fun onDisable() {
-        // Plugin cleanup code
-        logger.info("Plugin disabled!")
+// Reload configuration
+configManager.reloadConfig()
+```
+
+## 🗃️ Database Support
+
+### **Supported Databases**
+- **SQLite** - File-based, perfect for small servers
+- **MySQL** - Network database for larger deployments
+
+### **Features**
+- **HikariCP Connection Pooling** - High-performance connection management
+- **Automatic table creation** - Database schema is created automatically
+- **Migration support** - Easy database updates
+- **Connection validation** - Automatic connection health checks
+
+### **Usage Example**
+```kotlin
+// Initialize database
+databaseManager.initializeDatabase()
+
+// Execute queries
+val playerData = databaseManager.getPlayerData(playerUuid)
+databaseManager.savePlayerData(playerUuid, data)
+```
+
+## 🎮 Command System
+
+### **Built-in Commands**
+- `/myplugin` - Main command with help system
+- `/myplugin help` - Display available commands
+- `/myplugin reload` - Reload plugin configuration
+- `/myplugin info` - Display plugin information
+- `/myplugin debug` - Toggle debug mode
+
+### **Command Features**
+- **Permission-based** access control
+- **Tab completion** for better UX
+- **Help system** with usage examples
+- **Error handling** with user-friendly messages
+
+### **Adding New Commands**
+```kotlin
+override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
+    when (args.firstOrNull()?.lowercase()) {
+        "yourcommand" -> {
+            // Your command logic here
+            return true
+        }
     }
+    return false
 }
 ```
 
-## 📚 Included Features
+## � Event System
 
-- ✅ Maven configuration for Kotlin + PaperMC
-- ✅ Java 21 compatibility
-- ✅ Shade plugin for packaging
-- ✅ Basic plugin structure
-- ✅ Enable/disable logging
+### **Built-in Listeners**
+- **PlayerConnectionListener** - Tracks player join/quit events
+- **Automatic registration** - All listeners are registered automatically
 
-## 🔍 Dependencies
+### **Adding New Listeners**
+```kotlin
+@EventHandler
+fun onPlayerJoin(event: PlayerJoinEvent) {
+    // Your event handling logic
+}
+```
 
-### Runtime
-- **PaperMC API 1.21.7** (provided)
-- **Kotlin Standard Library 1.9.24**
+## 🔧 Development
 
-### Build
-- **Kotlin Maven Plugin**
-- **Maven Compiler Plugin**
-- **Maven Shade Plugin**
+### **Useful Maven Commands**
+```bash
+# Clean and compile
+mvn clean compile
 
-## 📖 Useful Resources
+# Run tests
+mvn test
 
-- [PaperMC Documentation](https://docs.papermc.io/)
-- [PaperMC API Javadoc](https://papermc.io/javadocs/)
+# Create JAR with dependencies
+mvn clean package
+
+# Install to local Maven repository
+mvn install
+
+# Skip tests during build
+mvn clean package -DskipTests
+```
+
+### **IDE Configuration**
+1. **Import Project**: Open the `pom.xml` file in IntelliJ IDEA
+2. **JDK Settings**: Set Project SDK to Java 21
+3. **Maven Settings**: Enable auto-import for Maven projects
+4. **Kotlin Plugin**: Ensure Kotlin plugin is enabled
+
+### **Debugging**
+```kotlin
+// Enable debug mode in config.yml or use command
+if (configManager.isDebugEnabled()) {
+    logger.info("Debug: Player ${player.name} performed action")
+}
+```
+
+## 🏗️ Building for Production
+
+### **Maven Profiles** (Optional Enhancement)
+Add different profiles for development and production:
+
+```xml
+<profiles>
+    <profile>
+        <id>dev</id>
+        <properties>
+            <plugin.debug>true</plugin.debug>
+        </properties>
+    </profile>
+    <profile>
+        <id>prod</id>
+        <properties>
+            <plugin.debug>false</plugin.debug>
+        </properties>
+    </profile>
+</profiles>
+```
+
+### **Building**
+```bash
+# Development build
+mvn clean package -Pdev
+
+# Production build  
+mvn clean package -Pprod
+```
+
+## � Dependencies
+
+### **Included Libraries**
+| Library | Version | Purpose |
+|---------|---------|---------|
+| Paper API | 1.21.8 | Minecraft server API |
+| Kotlin Stdlib | 1.9.24 | Kotlin standard library |
+| HikariCP | 5.0.1 | Database connection pooling |
+| MySQL Connector | 8.0.33 | MySQL database driver |
+| PlaceholderAPI | 2.11.5 | Placeholder support (optional) |
+
+### **Shaded Dependencies**
+The following dependencies are included in the final JAR:
+- Kotlin Standard Library
+- HikariCP
+- MySQL Connector
+
+## 🧪 Testing
+
+### **Unit Tests** (Ready for implementation)
+```kotlin
+@Test
+fun testConfigManager() {
+    // Test configuration loading
+    val config = ConfigManager(plugin)
+    assertNotNull(config.getPrefix())
+}
+```
+
+### **Integration Tests**
+```bash
+# Run with test server
+mvn test -Dtest.server.version=1.21.8
+```
+
+## 🚀 Performance Optimizations
+
+### **Built-in Optimizations**
+- **Async database operations** - Non-blocking database calls
+- **Connection pooling** - Efficient database connection management
+- **Configuration caching** - Reduced file I/O operations
+- **Event optimization** - Efficient event handling
+
+### **Memory Management**
+- **Proper resource cleanup** on plugin disable
+- **WeakReference usage** where appropriate
+- **Cache cleanup** on reload
+
+## 🔍 Troubleshooting
+
+### **Common Issues**
+
+**Issue**: "Plugin failed to load"
+- **Solution**: Check that Java 21 is being used
+- **Check**: Verify `api-version` matches server version
+
+**Issue**: "Database connection failed"
+- **Solution**: Verify database credentials in `config.yml`
+- **Check**: Ensure database server is running
+
+**Issue**: "Commands not working"
+- **Solution**: Check permissions in `plugin.yml`
+- **Check**: Verify command registration in main class
+
+### **Debug Mode**
+Enable debug mode to get detailed logging:
+```yaml
+plugin:
+  debug: true
+```
+
+## � Useful Resources
+
+### **Documentation**
+- [PaperMC API Documentation](https://docs.papermc.io/)
+- [PaperMC Javadocs](https://papermc.io/javadocs/)
 - [Kotlin Documentation](https://kotlinlang.org/docs/)
-- [Maven Guide](https://maven.apache.org/guides/)
+- [Maven Getting Started Guide](https://maven.apache.org/guides/getting-started/)
 
-## 🚨 Important Notes
-
-- The server must use **Java 21** to run this plugin
-- The `Main` class may appear as "unused" in your IDE, this is normal as it's loaded dynamically by PaperMC
-- Make sure `api-version` in `plugin.yml` matches your Minecraft version
+### **Tools**
+- [Maven Repository Search](https://mvnrepository.com/)
+- [PaperMC Downloads](https://papermc.io/downloads)
+- [Kotlin Playground](https://play.kotlinlang.org/)
 
 ## 🤝 Contributing
 
-1. Fork the project
-2. Create a branch for your feature
-3. Commit your changes
-4. Push to the branch
-5. Open a Pull Request
+We welcome contributions! Here's how you can help:
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
+
+### **Contribution Guidelines**
+- Follow Kotlin coding conventions
+- Add tests for new features
+- Update documentation as needed
+- Use meaningful commit messages
 
 ## 📄 License
 
-This project is a free-to-use boilerplate for your own plugins.
+This project is released under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+## 🎯 Roadmap
+
+- [ ] **GUI System** - Inventory-based menus
+- [ ] **Economy Integration** - Vault support
+- [ ] **Redis Support** - For multi-server setups  
+- [ ] **Metrics Integration** - bStats integration
+- [ ] **Update Checker** - Automatic update notifications
+
+## 💝 Acknowledgments
+
+- **PaperMC Team** - For the excellent server software
+- **Kotlin Team** - For the amazing programming language
+- **JetBrains** - For IntelliJ IDEA and Kotlin support
 
 ---
 
-*This boilerplate saves you time by automatically configuring the development environment for your PaperMC plugins in Kotlin!*
+<div align="center">
+
+**⭐ If this boilerplate helped you, please consider giving it a star! ⭐**
+
+*This boilerplate saves you hours of setup time and provides a solid foundation for your PaperMC plugins!*
+
+</div>
