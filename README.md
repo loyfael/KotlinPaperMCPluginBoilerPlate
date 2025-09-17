@@ -51,7 +51,7 @@ Edit the following files to match your project:
 
 **`pom.xml`**:
 ```xml
-<groupId>com.yourname</groupId>
+<groupId>kotlin.loyfael</groupId>
 <artifactId>your-plugin-name</artifactId>
 <version>1.0.0</version>
 ```
@@ -59,13 +59,13 @@ Edit the following files to match your project:
 **`src/main/resources/plugin.yml`**:
 ```yaml
 name: YourPluginName
-main: com.yourname.plugin.MyPlugin
+main: loyfael.MyPlugin
 author: YourName
 description: Your plugin description
 ```
 
 ### 3. **Update Package Names**
-Rename the package from `com.example.plugin` to your own:
+Rename the package from `loyfael` to your own:
 - Right-click on the package in IntelliJ IDEA
 - Select "Refactor → Rename"
 - Update all references
@@ -85,7 +85,7 @@ mvn clean package
 ```
 KotlinPaperMCPluginBoilerPlate/
 ├── src/main/
-│   ├── kotlin/com/example/plugin/
+│   ├── kotlin/loyfael/
 │   │   ├── MyPlugin.kt                 # Main plugin class
 │   │   ├── ConfigManager.kt            # Configuration handler
 │   │   ├── DatabaseManager.kt          # Database connection manager
