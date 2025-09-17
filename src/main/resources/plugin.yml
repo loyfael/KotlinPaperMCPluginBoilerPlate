@@ -1,15 +1,15 @@
 # === INFORMATIONS PRINCIPALES ===
 name: MyPlugin
 version: ${project.version}
-main: com.example.plugin.MyPlugin
+main: loyfael.MyPlugin
 api-version: '1.21'
 folia-supported: false
 
 # === INFORMATIONS OPTIONNELLES ===
 description: "${project.description}"
 website: "${project.url}"
-author: VotreNom
-authors: [VotreNom, AutreAuteur]
+author: Loyfael
+authors: [Loyfael]
 prefix: MyPlugin
 
 # === DÉPENDANCES ===

@@ -1,4 +1,4 @@
-package com.example.plugin
+package loyfael
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
@@ -14,22 +14,21 @@ import javax.sql.DataSource
  * Cette classe gère la connexion à la base de données (SQLite ou MySQL)
  * et fournit des méthodes pour exécuter des requêtes.
  */
-class DatabaseManager(private val plugin: MyPlugin) {
+class DatabaseManager(private val plugin: MyPlugin, private val configManager: ConfigManager) {
     
     private var dataSource: DataSource? = null
-    private val configManager = plugin.getConfigManager()
     
     /**
      * Initialise la base de données
      */
-    fun initialize() {
-        try {
+    fun initializeDatabase(): Boolean {
+        return try {
             when (configManager.getDatabaseType()) {
                 "mysql" -> initializeMySQL()
                 "sqlite" -> initializeSQLite()
                 else -> {
                     plugin.logger.severe("Type de base de données non supporté : ${configManager.getDatabaseType()}")
-                    throw IllegalArgumentException("Type de base de données invalide")
+                    return false
                 }
             }
             
@@ -37,10 +36,11 @@ class DatabaseManager(private val plugin: MyPlugin) {
             createTables()
             
             plugin.logger.info("Base de données initialisée avec succès (${configManager.getDatabaseType().uppercase()})")
+            true
             
         } catch (e: Exception) {
             plugin.logger.log(Level.SEVERE, "Erreur lors de l'initialisation de la base de données !", e)
-            throw e
+            false
         }
     }
     
@@ -208,7 +208,7 @@ class DatabaseManager(private val plugin: MyPlugin) {
     /**
      * Ferme la connexion à la base de données
      */
-    fun close() {
+    fun closeConnection() {
         try {
             (dataSource as? HikariDataSource)?.close()
             plugin.logger.info("Connexion à la base de données fermée")

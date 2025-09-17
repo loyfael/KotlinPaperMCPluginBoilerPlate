@@ -1,4 +1,4 @@
-package com.example.plugin.utils
+package loyfael.utils
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor

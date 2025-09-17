@@ -1,4 +1,4 @@
-package com.example.plugin
+package loyfael
 
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -11,9 +11,10 @@ import org.bukkit.event.player.PlayerQuitEvent
  * Pour l'utiliser, décommentez l'enregistrement dans MyPlugin.kt :
  * server.pluginManager.registerEvents(PlayerConnectionListener(this), this)
  */
-class PlayerConnectionListener(private val plugin: MyPlugin) : Listener {
-    
-    private val configManager = plugin.getConfigManager()
+class PlayerConnectionListener(
+    private val plugin: MyPlugin,
+    private val databaseManager: DatabaseManager
+) : Listener {
     
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
@@ -23,7 +24,7 @@ class PlayerConnectionListener(private val plugin: MyPlugin) : Listener {
         try {
             savePlayerToDatabase(player.uniqueId.toString(), player.name)
             
-            if (configManager.isDebugEnabled()) {
+            if (plugin.getConfigManager().isDebugEnabled()) {
                 plugin.logger.info("Joueur ${player.name} enregistré en base de données")
             }
             
@@ -32,6 +33,7 @@ class PlayerConnectionListener(private val plugin: MyPlugin) : Listener {
         }
         
         // Message de bienvenue personnalisé (optionnel)
+        val configManager = plugin.getConfigManager()
         if (player.hasPlayedBefore()) {
             // Joueur connu
             if (configManager.hasKey("messages.welcome-back")) {
@@ -57,7 +59,7 @@ class PlayerConnectionListener(private val plugin: MyPlugin) : Listener {
         try {
             updatePlayerLastSeen(player.uniqueId.toString())
             
-            if (configManager.isDebugEnabled()) {
+            if (plugin.getConfigManager().isDebugEnabled()) {
                 plugin.logger.info("Dernière connexion mise à jour pour ${player.name}")
             }
             
@@ -78,7 +80,7 @@ class PlayerConnectionListener(private val plugin: MyPlugin) : Listener {
             updated_at = VALUES(updated_at)
         """.trimIndent()
         
-        plugin.getDatabaseManager().executeUpdate(sql, uuid, username)
+        databaseManager.executeUpdate(sql, uuid, username)
     }
     
     /**
@@ -86,13 +88,14 @@ class PlayerConnectionListener(private val plugin: MyPlugin) : Listener {
      */
     private fun updatePlayerLastSeen(uuid: String) {
         val sql = "UPDATE users SET updated_at = ${getCurrentTimestamp()} WHERE uuid = ?"
-        plugin.getDatabaseManager().executeUpdate(sql, uuid)
+        databaseManager.executeUpdate(sql, uuid)
     }
     
     /**
      * Obtient la valeur timestamp actuelle selon le type de base de données
      */
     private fun getCurrentTimestamp(): String {
+        val configManager = plugin.getConfigManager()
         return when (configManager.getDatabaseType()) {
             "mysql" -> "NOW()"
             "sqlite" -> "strftime('%s', 'now')"

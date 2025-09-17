@@ -1,4 +1,4 @@
-package com.example.plugin
+package loyfael
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -14,9 +14,11 @@ import org.bukkit.entity.Player
  * 
  * Gère les sous-commandes : help, reload, info
  */
-class MainCommand(private val plugin: MyPlugin) : CommandExecutor, TabCompleter {
-    
-    private val configManager = plugin.getConfigManager()
+class MainCommand(
+    private val plugin: MyPlugin,
+    private val configManager: ConfigManager,
+    private val databaseManager: DatabaseManager
+) : CommandExecutor, TabCompleter {
     
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         
@@ -104,7 +106,7 @@ class MainCommand(private val plugin: MyPlugin) : CommandExecutor, TabCompleter 
         sendMessage(sender, "&eLangue: &f${configManager.getLanguage()}")
         
         // Test de connexion à la base de données
-        val dbStatus = if (plugin.getDatabaseManager().testConnection()) "&aConnectée" else "&cDéconnectée"
+        val dbStatus = if (databaseManager.testConnection()) "&aConnectée" else "&cDéconnectée"
         sendMessage(sender, "&eÉtat BDD: $dbStatus")
         
         sendMessage(sender, "&8&m-----------------------------------------")

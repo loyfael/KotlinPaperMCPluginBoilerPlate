@@ -1,4 +1,4 @@
-package com.example.plugin.data
+package loyfael.data
 
 import java.util.*
 

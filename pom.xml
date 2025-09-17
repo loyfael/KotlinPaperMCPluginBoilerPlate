@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!-- === INFORMATIONS DU PROJET === -->
-    <groupId>com.example</groupId>
+    <groupId>kotlin.loyfael</groupId>
     <artifactId>my-plugin</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     
     <name>MyPlugin</name>
     <description>Description de votre plugin PaperMC</description>
-    <url>https://github.com/votre-username/votre-plugin</url>
+    <url>https://github.com/loyfael/KotlinPaperMCPluginBoilerPlate</url>
 
     <!-- === PROPRIÉTÉS === -->
     <properties>

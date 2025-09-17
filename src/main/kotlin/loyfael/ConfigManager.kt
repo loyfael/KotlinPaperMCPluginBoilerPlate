@@ -1,4 +1,4 @@
-package com.example.plugin
+package loyfael
 
 import org.bukkit.configuration.file.FileConfiguration
 
@@ -189,5 +189,28 @@ class ConfigManager(private val plugin: MyPlugin) {
      */
     fun getConfigVersion(): Int {
         return config.getInt("config-version", 1)
+    }
+    
+    /**
+     * Charge la configuration depuis le fichier
+     */
+    fun loadConfig() {
+        plugin.saveDefaultConfig()
+        plugin.reloadConfig()
+        
+        if (isDebugEnabled()) {
+            plugin.logger.info("§aConfiguration chargée avec succès")
+        }
+    }
+    
+    /**
+     * Recharge la configuration depuis le fichier
+     */
+    fun reloadConfig() {
+        plugin.reloadConfig()
+        
+        if (isDebugEnabled()) {
+            plugin.logger.info("§aConfiguration rechargée")
+        }
     }
 }
